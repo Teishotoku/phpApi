@@ -1,21 +1,23 @@
 <?php
 
-namespace objects;
+namespace routes;
 
-class Ready
+class Orders
 {
-  // соединение с БД и таблицей "ready"
+  // соединение с БД и таблицей "orders"
   private $conn;
-  private $table_name = "ready";
+  private $table_name = "orders";
 
   // свойства объекта
   public $order_id;
-  public $type_repair;
-  public $cost_repair;
-  public $date_execution;
-  public $sms_client;
+  public $date;
+  public $client_first;
+  public $client_last;
+  public $client_patronymic;
+  public $product_id;
+  public $waranty;
   public $date_receipt;
-  public $payment;
+  public $phone;
 
   public function __construct($db)
   {
@@ -24,7 +26,7 @@ class Ready
   public function readAll()
   {
     $query = "SELECT
-                order_id, type_repair, cost_repair, date_execution,sms_client, date_receipt, payment 
+                order_id, date, client_first, client_last, client_patronymic, product_id, waranty, phone, date_receipt
             FROM
                 " . $this->table_name . "
             ORDER BY

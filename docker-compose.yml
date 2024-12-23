@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  findTrend:
+  kbk:
     image: postgres
     container_name: phpApi_db
     ports:

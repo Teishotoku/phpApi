@@ -11,15 +11,12 @@ class Product
   private $table_name = "product";
 
   // свойства объекта
-  public $order_id;
-  public $date;
-  public $client_first;
-  public $client_last;
-  public $client_patronomyc;
   public $product_id;
+  public $product_name;
+  public $product_firm;
+  public $model;
   public $waranty;
-  public $phone;
-  public $date_receipt;
+  public $image;
 
   public function __construct($db)
   {
@@ -28,11 +25,11 @@ class Product
   public function readAll()
   {
     $query = "SELECT
-                order_id, date, client_first, client_last, client_patronomyc, product_id, waranty, phone, date_receipt
+                product_id, product_name, product_firm, model, waranty, image
             FROM
                 " . $this->table_name . "
             ORDER BY
-                order_id";
+                product_id";
 
     $stmt = $this->conn->prepare($query);
     $stmt->execute();
@@ -43,48 +40,39 @@ class Product
   public function readOne()
   {
     $query = "SELECT 
-                order_id, date, client_first, client_last, client_patronomyc, product_id, waranty, phone, date_receipt
+                product_id, product_name, product_firm, model, waranty, image
               FROM 
               " . $this->table_name . "
-              WHERE order_id=:order_id";
+              WHERE product_id=:product_id";
     $stmt = $this->conn->prepare($query);
-    $this->order_id = htmlspecialchars(strip_tags($this->order_id));
-    $stmt->bindParam(':order_id', $this->order_id);
+    $this->image = htmlspecialchars(strip_tags($this->image));
+    $stmt->bindParam(':product_id', $this->image);
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $this->date = $row['date'];
-    $this->client_first = $row['client_first'];
-    $this->client_last = $row['client_last'];
-    $this->client_patronomyc = $row['client_patronomyc'];
-    $this->product_id = $row['product_id'];
+    $this->product_name = $row['product_name'];
+    $this->product_firm = $row['product_firm'];
+    $this->model = $row['model'];
     $this->waranty = $row['waranty'];
-    $this->phone = $row['phone'];
-    $this->date_receipt = $row['date_receipt'];
+    $this->image = $row['image'];
   }
 
   public function create(): bool
   {
-    $query = "insert into " . $this->table_name . " (order_id, date, client_first, client_last, client_patronomyc, product_id, waranty, phone, date_receipt) 
-        values (:order_id,:date,:client_first,:client_last,:client_patronomyc,:product_id,:waranty,:phone,:date_receipt)";
+    $query = "insert into " . $this->table_name . " (product_id, product_name, product_firm, model, waranty, image) 
+        values (:product_id,:product_name,:product_firm,:model,:waranty,:image)";
     $stmt = $this->conn->prepare($query);
-    $this->order_id = htmlspecialchars(strip_tags($this->order_id));
-    $this->date = htmlspecialchars(strip_tags($this->date));
-    $this->client_first = htmlspecialchars(strip_tags($this->client_first));
-    $this->client_last = htmlspecialchars(strip_tags($this->client_last));
-    $this->client_patronomyc = htmlspecialchars(strip_tags($this->client_patronomyc));
-    $this->product_id = htmlspecialchars(strip_tags($this->product_id));
+    $this->product_name = htmlspecialchars(strip_tags($this->product_name));
+    $this->product_firm = htmlspecialchars(strip_tags($this->product_firm));
+    $this->model = htmlspecialchars(strip_tags($this->model));
+    $this->image = htmlspecialchars(strip_tags($this->image));
     $this->waranty = htmlspecialchars(strip_tags($this->waranty));
-    $this->phone = htmlspecialchars(strip_tags($this->phone));
-    $this->date_receipt = htmlspecialchars(strip_tags($this->date_receipt));
-    $stmt->bindParam(':order_id', $this->order_id);
-    $stmt->bindParam(':date', $this->date);
-    $stmt->bindParam(':client_first', $this->client_first);
-    $stmt->bindParam(':client_last', $this->client_last);
-    $stmt->bindParam(':client_patronomyc', $this->client_patronomyc);
+    $this->image = htmlspecialchars(strip_tags($this->image));
     $stmt->bindParam(':product_id', $this->product_id);
+    $stmt->bindParam(':product_name', $this->product_name);
+    $stmt->bindParam(':product_firm', $this->product_firm);
+    $stmt->bindParam(':model', $this->model);
     $stmt->bindParam(':waranty', $this->waranty);
-    $stmt->bindParam(':phone', $this->phone);
-    $stmt->bindParam(':date_receipt', $this->date_receipt);
+    $stmt->bindParam(':image', $this->image);
     if ($stmt->execute()) {
       return true;
     }
@@ -93,36 +81,27 @@ class Product
 
   public function update()
   {
-    $query = "update " . $this->table_name . " set order_id=:order_id, 
-                                                 date=:date,
-                                                 client_first=:client_first,
-                                                 client_last=:client_last,
-                                                 client_patronomyc=:client_patronomyc,
-                                                 product_id=:product_id,
+    $query = "update " . $this->table_name . " set product_id=:product_id, 
+                                                 product_name=:product_name
+                                                 product_firm=:product_firm,
+                                                 model=:model,
                                                  waranty=:waranty,
-                                                 phone=:phone,
-                                                 date_receipt=:date_receipt
-                                                 where order_id=:order_id";
+                                                 image=:image
+                                                 where product_id=:product_id";
     $stmt = $this->conn->prepare($query);
-    $this->order_id = htmlspecialchars(strip_tags($this->order_id));
-    $this->date = htmlspecialchars(strip_tags($this->date));
-    $this->client_first = htmlspecialchars(strip_tags($this->client_first));
-    $this->client_last = htmlspecialchars(strip_tags($this->client_last));
-    $this->client_patronomyc = htmlspecialchars(strip_tags($this->client_patronomyc));
     $this->product_id = htmlspecialchars(strip_tags($this->product_id));
+    $this->product_name = htmlspecialchars(strip_tags($this->product_name));
+    $this->product_firm = htmlspecialchars(strip_tags($this->product_firm));
+    $this->model = htmlspecialchars(strip_tags($this->model));
     $this->waranty = htmlspecialchars(strip_tags($this->waranty));
-    $this->phone = htmlspecialchars(strip_tags($this->phone));
-    $this->date_receipt = htmlspecialchars(strip_tags($this->date_receipt));
+    $this->image = htmlspecialchars(strip_tags($this->image));
 
-    $stmt->bindParam(':order_id', $this->order_id);
-    $stmt->bindParam(':date', $this->date);
-    $stmt->bindParam(':client_first', $this->client_first);
-    $stmt->bindParam(':client_last', $this->client_last);
-    $stmt->bindParam(':client_patronomyc', $this->client_patronomyc);
     $stmt->bindParam(':product_id', $this->product_id);
+    $stmt->bindParam(':product_name', $this->product_name);
+    $stmt->bindParam(':product_firm', $this->product_firm);
+    $stmt->bindParam(':model', $this->model);
     $stmt->bindParam(':waranty', $this->waranty);
-    $stmt->bindParam(':phone', $this->phone);
-    $stmt->bindParam(':date_receipt', $this->date_receipt);
+    $stmt->bindParam(':image', $this->image);
 
     if ($stmt->execute()) {
       return true;
@@ -131,10 +110,10 @@ class Product
   }
   public function delete(): bool
   {
-    $query = "delete from " . $this->table_name . " where order_id=:order_id";
+    $query = "delete from " . $this->table_name . " where product_id=:product_id";
     $stmt = $this->conn->prepare($query);
-    $this->order_id = htmlspecialchars(strip_tags($this->order_id));
-    $stmt->bindParam(':order_id', $this->order_id);
+    $this->image = htmlspecialchars(strip_tags($this->product_id));
+    $stmt->bindParam(':product_id', $this->product_id);
     if ($stmt->execute()) {
       return true;
     }
@@ -142,8 +121,8 @@ class Product
   }
   public function search($keyword)
   {
-    $query = "SELECT * FROM " . $this->table_name . " o 
-      WHERE 'o.date' LIKE ? or o.client_first LIKE ? OR o.client_last LIKE ? OR o.client_patronomyc LIKE ? ORDER BY o.order_id";
+    $query = "SELECT * FROM " . $this->table_name . " p 
+      WHERE p.product_name LIKE ? or p.product_firm LIKE ? OR p.model LIKE ? OR p.waranty LIKE ? OR p.image LIKE ? ORDER BY p.product_id";
 
     $stmt = $this->conn->prepare($query);
     $keyword = htmlspecialchars(strip_tags($keyword));
@@ -152,6 +131,7 @@ class Product
     $stmt->bindParam(2, $keyword);
     $stmt->bindParam(3, $keyword);
     $stmt->bindParam(4, $keyword);
+    $stmt->bindParam(5, $keyword);
     $stmt->execute();
     return $stmt;
   }

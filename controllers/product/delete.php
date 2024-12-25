@@ -11,14 +11,16 @@ $db = $database->getConnection();
 $product = new \objects\Product($db);
 $data = json_decode(file_get_contents("php://input"));
 $product->product_id = $data->product_id;
-if($product->delete()) {
-    http_response_code(200);
-    echo json_encode(array("message" => "Товар удален."),
-        JSON_UNESCAPED_UNICODE);
-}
-else
-{
-    http_response_code(503);
-    echo json_encode(array("message" => "Невозможно удалить товар."),
-        JSON_UNESCAPED_UNICODE);
+if ($product->delete()) {
+  http_response_code(200);
+  echo json_encode(
+    array("message" => "Товар удален."),
+    JSON_UNESCAPED_UNICODE
+  );
+} else {
+  http_response_code(503);
+  echo json_encode(
+    array("message" => "Невозможно удалить товар."),
+    JSON_UNESCAPED_UNICODE
+  );
 }

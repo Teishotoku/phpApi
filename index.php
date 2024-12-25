@@ -8,6 +8,7 @@ $readyRoute = '/controllers/ready/';
 include_once './config/database.php';
 include_once './routes/orders.php';
 include_once './routes/employee.php';
+include_once './routes/ready.php';
 
 switch ($request) {
   case '':

@@ -1,6 +1,6 @@
 <?php
 
-use objects\Orders;
+use routes\Orders;
 
 header("access-control-allow-origin: *");
 header("content-type: application/json; charset=utf-8");
@@ -8,23 +8,24 @@ header("access-control-allow-methods: POST");
 header("access-control-max-age: 3600");
 header("access-control-allow-headers: content-type, access-control-allow-headers, authorization, x-requested-with");
 
-include_once '../../config/database.php';
-include_once '../../objects/Orders.php';
 $database = new Database();
 $db = $database->getConnection();
 $orders = new Orders($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if (
-  !empty($data->product_name) && !empty($data->description)
-  && !empty($data->price) && !empty($data->category_id)
+  !empty($data->order_id) && !empty($data->date)
+  && !empty($data->client_first) && !empty($data->client_last)
+  && !empty($data->client_patronomyc) && !empty($data->product_id)
+  && !empty($data->waranty) && !empty($data->phone)
+  && !empty($data->date_receipt)
 ) {
 
-  $orders->order_id = $data->product_name;
+  $orders->order_id = $data->order_id;
   $orders->date = $data->date;
   $orders->client_first = $data->client_first;
   $orders->client_last = $data->client_last;
-  $orders->product_id = $data->client_patronomyc;
+  $orders->client_patronomyc = $data->client_patronomyc;
   $orders->product_id = $data->product_id;
   $orders->waranty = $data->waranty;
   $orders->phone = $data->phone;
@@ -35,16 +36,16 @@ if (
     http_response_code(201);
     echo json_encode(
       array("message" => "товар был создан."),
-      json_unescaped_unicode
+      JSON_UNESCAPED_UNICODE
     );
   } else {
     http_response_code(503);
     echo json_encode(
       array("message" => "невозможно создать товар."),
-      json_unescaped_unicode
+      JSON_UNESCAPED_UNICODE
     );
   }
 } else {
   http_response_code(400);
-  echo json_encode(array("message" => "невозможно создать товар.данные неполные", json_unescaped_unicode));
+  echo json_encode(array("message" => "невозможно создать товар. данные неполные", JSON_UNESCAPED_UNICODE));
 }

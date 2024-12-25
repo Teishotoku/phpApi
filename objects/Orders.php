@@ -39,8 +39,8 @@ class Orders
   }
   public function create()
   {
-    $query = "insert into " . $this->table_name . " (category_id,product_name,description,price,created) 
-        values (:category_id,:product_name,:description,:price,:created)";
+    $query = "insert into " . $this->table_name . " (order_id, date, client_first, client_last, client_patronomyc, product_id, waranty, phone, date_receipt) 
+        values (:order_id,:date,:client_first,:client_last,:client_patronomyc,:product_id,:waranty,:phone,:date_receipt)";
     $stmt = $this->conn->prepare($query);
     $this->order_id = htmlspecialchars(strip_tags($this->order_id));
     $this->date = htmlspecialchars(strip_tags($this->date));

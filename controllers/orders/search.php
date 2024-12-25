@@ -4,10 +4,15 @@ use routes\Orders;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+
+include_once '../../config/database.php';
+include_once '../../routes/orders.php';
+
 $database = new Database();
 $db = $database->getConnection();
 $orders = new Orders($db);
-$stmt = $orders->readAll();
+$keywords = isset($_GET['name']) ? $_GET['name'] : "";
+$stmt = $orders->search($keywords);
 $num = $stmt->rowCount();
 if ($num > 0) {
   $orders_arr = array();
@@ -15,24 +20,16 @@ if ($num > 0) {
   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($row);
     $orders_item = array(
-      "order_id" => $order_id,
       "date" => $date,
       "client_first" => $client_first,
       "client_last" => $client_last,
-      "client_patronomyc" => $client_patronomyc,
-      "product_id" => $product_id,
-      "waranty" => $waranty,
-      "phone" => $phone,
-      "date_receipt" => $date_receipt
+      "category_name" => $client_patronomyc
     );
-    $orders_arr["records"][] = $orders_item;
+    array_push($orders_arr["records"], $orders_item);
   }
   http_response_code(200);
   echo json_encode($orders_arr);
 } else {
   http_response_code(404);
-  echo json_encode(
-    array("message" => "Товары не найдены."),
-    JSON_UNESCAPED_UNICODE
-  );
+  echo json_encode(array("message" => "Товары не найдены."), JSON_UNESCAPED_UNICODE);
 }

@@ -25,7 +25,7 @@ if ($num > 0) {
       "date_execution" => $date_execution,
       "sms_client" => $sms_client,
       "date_receipt" => $date_receipt,
-      "payment" => $payment,
+      "payment" => $payment
     );
     array_push($ready_arr["records"], $ready_item);
   }

@@ -58,9 +58,9 @@ class Ready
     $this->payment = $row['payment'];
   }
 
-  public function create(): bool
+  public function create()
   {
-    $query = "insert into " . $this->table_name . " (order_id, type_repair, cost_repair, date_execution, sms_client, date_receipt, payment) 
+    $query = "INSERT INTO " . $this->table_name . " (order_id, type_repair, cost_repair, date_execution, sms_client, date_receipt, payment) 
         values (:order_id,:type_repair,:cost_repair,:date_execution,:sms_client,:date_receipt,:payment)";
     $stmt = $this->conn->prepare($query);
     $this->order_id = htmlspecialchars(strip_tags($this->order_id));
@@ -75,7 +75,7 @@ class Ready
     $stmt->bindParam(':cost_repair', $this->cost_repair);
     $stmt->bindParam(':date_execution', $this->date_execution);
     $stmt->bindParam(':sms_client', $this->sms_client);
-    $stmt->bindParam(':date_receipt', $this->sms_client);
+    $stmt->bindParam(':date_receipt', $this->date_receipt);
     $stmt->bindParam(':payment', $this->payment);
     if ($stmt->execute()) {
       return true;
@@ -91,7 +91,7 @@ class Ready
                                                  date_execution=:date_execution,
                                                  sms_client=:sms_client,
                                                  date_receipt=:date_receipt,
-                                                 payment=:payment,
+                                                 payment=:payment
                                                  where order_id=:order_id";
     $stmt = $this->conn->prepare($query);
     $this->order_id = htmlspecialchars(strip_tags($this->order_id));
@@ -129,7 +129,7 @@ class Ready
   public function search($keyword)
   {
     $query = "SELECT * FROM " . $this->table_name . " r 
-      WHERE r.type_repair LIKE ? or r.cost_repair LIKE ? OR r.date_execution LIKE ? OR r.sms_client LIKE ? OR r.date_receipt LIKE ? OR payment LIKE ? ORDER BY r.order_id";
+      WHERE r.type_repair LIKE ? OR r.cost_repair LIKE ? OR 'r.date_execution' LIKE ? OR r.sms_client LIKE ? OR 'r.date_receipt LIKE ? OR payment LIKE ? ORDER BY r.order_id";
 
     $stmt = $this->conn->prepare($query);
     $keyword = htmlspecialchars(strip_tags($keyword));
@@ -144,3 +144,4 @@ class Ready
     return $stmt;
   }
 }
+

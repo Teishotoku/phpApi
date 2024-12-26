@@ -6,12 +6,12 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 include_once '../../config/database.php';
-include_once '../../objects/product.php';
+include_once '../../routes/product.php';
 
 $database = new Database();
 $db = $database->getConnection();
 $product = new Product($db);
-$keywords = isset($_GET['s']) ? $_GET['s'] : "";
+$keywords = isset($_GET['name']) ? $_GET['name'] : "";
 $stmt = $product->search($keywords);
 $num = $stmt->rowCount();
 if ($num > 0) {
@@ -23,7 +23,6 @@ if ($num > 0) {
       "product_name" => $product_name,
       "product_firm" => $product_firm,
       "model" => $model,
-      "waranty" => $waranty,
       "image" => $image
     );
     array_push($products_arr["records"], $product_item);

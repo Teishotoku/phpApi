@@ -27,7 +27,6 @@ if (
   $ready->sms_client = $data->sms_client;
   $ready->date_receipt = $data->date_receipt;
   $ready->payment = $data->payment;
-
   if ($ready->create()) {
     http_response_code(201);
     echo json_encode(

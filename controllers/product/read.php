@@ -33,4 +33,3 @@ if ($num > 0) {
     JSON_UNESCAPED_UNICODE
   );
 }
-

@@ -1,6 +1,6 @@
 <?php
 
-use objects\Product;
+use routes\Product;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -14,9 +14,11 @@ $product = new Product($db);
 $data = json_decode(file_get_contents("php://input"));
 
 if (
-  !empty($data->product_name) && !empty($data->description)
-  && !empty($data->price) && !empty($data->category_id)
+  !empty($data->product_id) && !empty($data->product_name)
+  && !empty($data->product_firm) && !empty($data->model)
+  && !empty($data->waranty) && !empty($data->image)
 ) {
+  $product->product_id = $data->product_id;
   $product->product_name = $data->product_name;
   $product->product_firm = $data->product_firm;
   $product->model = $data->model;
@@ -40,4 +42,3 @@ if (
   http_response_code(400);
   echo json_encode(array("message" => "Невозможно создать товар.Данные неполные", JSON_UNESCAPED_UNICODE));
 }
-

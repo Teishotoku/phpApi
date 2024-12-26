@@ -31,4 +31,3 @@ if ($product->update()) {
     JSON_UNESCAPED_UNICODE
   );
 }
-
